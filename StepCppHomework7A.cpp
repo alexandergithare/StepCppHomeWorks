@@ -127,6 +127,18 @@ T* dellElemPos(T* a, int n, int pos = 0)
 	return p;
 }
 
+bool checkSympleNumber(int n)
+{
+	int n1 = abs(n);
+	if (n1 == 1 || n1 == 2 || n1 == 0) return 1;
+	if (n % 2 == 0) return 0;
+	for (int i = 3; i < n1; i += 2)
+	{
+		if (n1 % i == 0) return 0;
+	}
+	return 1;
+}
+
 
 
 int main()
@@ -191,9 +203,14 @@ int main()
 	for (int i = 0; i < sizeb; i++)
 	{
 		bo1 = 1;
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < sizea; j++)
 		{
-			if (B1[i] == C1[j])
+			if (B1[i] == A1[j]) { bo1 = 0; break; }
+		}
+		for (int j = 0; j <= n; j++)
+		{
+			if (bo1 == 0) break;
+			if (B1[i] == C2[j])
 			{
 				bo1 = 0;
 				break;
@@ -224,21 +241,28 @@ int main()
 	C4 = createArr(C4, n);
 	for (int i = 0; i < sizea; i++)
 	{
-		bo1 = 1;
+		bo1 = 0;
 		for (int j = 0; j < sizeb; j++)
 		{
 			if (A1[i] == B1[j])
 			{
-				for (int k = 0; k <= n; k++)
-				{
-					bo1 = (A1[i] == C4[k]) ? 0 : 1;
-				}
-			}
-			if (bo1)
-			{
-				C4 = addElem(C4, n++, A1[i]);
+				bo1 = 1;
 				break;
 			}
+		}
+		for (int j = 0; j <= n; j++)
+		{
+			if (bo1 == 0) break;
+			if (A1[i] == C4[j])
+			{
+				bo1 = 0;
+				break;
+			}
+		}
+		if (bo1)
+		{
+			C4 = addElem(C4, n, A1[i]);
+			n++;
 		}
 	}
 	cout << endl;
