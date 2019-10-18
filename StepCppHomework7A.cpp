@@ -6,7 +6,7 @@
 #include <conio.h>   //For uses _getch()
 #include <iomanip>  //For use setw()
 #include <ctime>
-#include <typeinfo.h>
+//#include <typeinfo.h>
 //#include <windows.h>
 
 using namespace std;
@@ -139,6 +139,49 @@ bool checkSympleNumber(int n)
 	return 1;
 }
 
+bool dellEvenPos(int* a, int n, int pos = 0)
+{
+	if (a[pos] % 2 != 0) return 0;
+	int* a1 = new int[n];
+	for (int i = 0; i < n; i++) a1[i] = a[i];
+	for (int i = 0; i < pos; i++)
+	{
+		a[i] = a1[i];
+	}
+	for (int i = pos; i < n - 1; i++)
+	{
+		a[i] = a1[i + 1];
+	}
+	delete[]a1;
+	return 1;
+}
+
+bool dellOddPos(int* a, int n, int pos = 0)
+{
+	if (a[pos] % 2 == 0) return 0;
+	int* a1 = new int[n];
+	for (int i = 0; i < n; i++) a1[i] = a[i];
+	for (int i = 0; i < pos; i++)
+	{
+		a[i] = a1[i];
+	}
+	for (int i = pos; i < n - 1; i++)
+	{
+		a[i] = a1[i + 1];
+	}
+	delete[]a1;
+	return 1;
+}
+
+//int* dellOddPos(int* a, int n, int pos = 0)
+//{
+//	if (a[pos] % 2 == 0) return a;
+//	int* p = new int[n - 1];
+//	for (int i = 0; i < pos; i++) p[i] = a[i];
+//	for (int i = pos; i < n - 1; i++) p[i] = a[i + 1];
+//	delete[]a;
+//	return p;
+//}
 
 
 int main()
@@ -268,6 +311,41 @@ int main()
 	cout << endl;
 	showArr(C4, 1, n);
 
+	_getche();
+
+//	Task5.
+
+	cout << " Enter array size: ";
+	cin >> sizea;
+	int(*C5) = nullptr;
+	C5 = createArr(C5, sizea);
+	initRandArr(C5, 1, sizea, -100, 100);
+	showArr(C5, 1, sizea);
+
+	cout << " What items for delete (1 = odd, 0 = even)?: ";
+	char chv1 = 0; int n1 = 1;
+	while (!((chv1 == '1') || (chv1 == '0')))
+	{
+		chv1 = _getche();
+		if ((chv1 == '1') || (chv1 == '0')) n1 = (int)chv1 - 48;
+		else cout << "\b\a";
+	}
+	cout << endl;
+	typedef  bool (*dellEvenOddPtr)(int*, int, int);
+	dellEvenOddPtr dellFunk[2] = { dellEvenPos, dellOddPos };
+	for (int i = 0; i < sizea; i++)
+	{
+		if ((dellFunk[n1](C5, sizea, i)) == 1)
+		{
+			sizea--;
+			i--;
+		}
+//		cout << endl << sizea << endl;
+//		showArr(C5, 1, sizea);
+	}
+	showArr(C5, 1, sizea);
+	cout << endl;
+	delete[] C5;
 	_getche();
 
 	//	system("pause");
